@@ -87,4 +87,9 @@ function state_difference(x, x0)
     return vcat(ds, dθ, dv, dω)
 end
 
+function normalize_state!(x)
+    q = view(x, 2:3)
+    q ./= sqrt(q'q)
+end
+
 end # module UCNCartPoleODE
