@@ -1,0 +1,12 @@
+name = "UCNCartPoleODE"
+uuid = "020fc5a9-7829-4d7f-9758-a9dd5095b6c2"
+authors = ["Juraj Lieskovský <lieskovsky.juraj@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Infiltrator = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+
+[compat]
+Infiltrator = "1.9.3"
+StaticArrays = "1.9.14"
