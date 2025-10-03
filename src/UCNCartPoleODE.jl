@@ -50,15 +50,12 @@ torque_vector(m, x, u) = @SVector [
     -m.g * m.m_p * m.l * qsin(x[2:3])
 ]
 
-dxdz(x, ż) = @SVector [
-    ż[1], -0.5 * x[3] * ż[2], 0.5 * x[2] * ż[2], ż[3], ż[4]
-]
-
 function f(m, x, u)
     M = mass_matrix(m, x)
     τ = torque_vector(m, x, u)
+    a = M \ τ
 
-    return Vector(dxdz(x, vcat(x[4:5], M \ τ)))
+    return @SVector [x[4], -0.5 * x[3] * x[5], 0.5 * x[2] * x[5], a[1], a[2]]
 end
 
 function f!(m, ẋ, x, u)
