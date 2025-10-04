@@ -55,11 +55,22 @@ function f(m, x, u)
     τ = torque_vector(m, x, u)
     a = M \ τ
 
-    return @SVector [x[4], -0.5 * x[3] * x[5], 0.5 * x[2] * x[5], a[1], a[2]]
+    return [
+        x[4], -0.5 * x[3] * x[5], 0.5 * x[2] * x[5], a[1], a[2]
+    ]
 end
 
 function f!(m, ẋ, x, u)
-    ẋ .= f(m, x, u)
+    M = mass_matrix(m, x)
+    τ = torque_vector(m, x, u)
+    a = M \ τ
+
+    ẋ[1] = x[4]
+    ẋ[2] = -0.5 * x[3] * x[5]
+    ẋ[3] = 0.5 * x[2] * x[5]
+    ẋ[4] = a[1]
+    ẋ[5] = a[2]
+
     return nothing
 end
 
