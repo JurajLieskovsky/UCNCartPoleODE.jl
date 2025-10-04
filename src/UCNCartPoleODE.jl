@@ -40,15 +40,23 @@ qcos(q) = q[1]^2 - q[2]^2 # cos^2(θ/2) - sin^2(θ/2)
 # CartPole
 
 ## dynamics
-mass_matrix(m, x) = @SMatrix [
-    m.m_c+m.m_p m.m_p*m.l*qcos(x[2:3])
-    m.m_p*m.l*qcos(x[2:3]) m.m_p*m.l^2
-]
+function mass_matrix(m, x)
+    c = qcos(x[2:3])
 
-torque_vector(m, x, u) = @SVector [
-    m.m_p * m.l * qsin(x[2:3]) * x[5]^2 + u[1],
-    -m.g * m.m_p * m.l * qsin(x[2:3])
-]
+    return @SMatrix [
+        m.m_c+m.m_p m.m_p*m.l*c
+        m.m_p*m.l*c m.m_p*m.l^2
+    ]
+end
+
+function torque_vector(m, x, u)
+    s, ω = qsin(x[2:3]), x[5]
+
+    return @SVector [
+        m.m_p * m.l * s * ω^2 + u[1],
+        -m.g * m.m_p * m.l * s
+    ]
+end
 
 function f(m, x, u)
     M = mass_matrix(m, x)
